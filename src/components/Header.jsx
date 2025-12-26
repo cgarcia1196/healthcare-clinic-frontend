@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import homePageMain from "../assets/homePageMain.jpg";
 import axios from "axios";
+import { AppContext } from "../context/AppContext";
 
 const Header = () => {
   const [symptoms, setSymptoms] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+  const { backendUrl } = useContext(AppContext);
 
   const handleSubmit = async () => {
     if (!symptoms.trim()) return;
@@ -14,13 +16,13 @@ const Header = () => {
     setResponse("");
 
     try {
-      const res = await axios.post("http://localhost:4000/api/user/ai-helper", {
+      const res = await axios.post(`${backendUrl}/api/user/ai-helper`, {
         patientText: symptoms,
       });
 
       setResponse(res.data.aiResponse);
     } catch (error) {
-      setResponse("⚠ Something went wrong. Please try again.");
+      setResponse("Something went wrong. Please try again.");
     }
 
     setLoading(false);
