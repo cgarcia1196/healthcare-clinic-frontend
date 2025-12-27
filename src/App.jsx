@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Doctors from "./pages/Doctors";
@@ -14,6 +14,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
+  //this useEffect calls the backend to start the render instance since it takes a few seconds to spin up
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  useEffect(() => {
+    console.log("Backend spining up");
+    fetch(`${backendUrl}/`, {
+      method: "GET",
+      cache: "no-store",
+    }).catch(() => {});
+  }, []);
   return (
     <div className="mx-4 sm:mx-[10%]">
       <ToastContainer />
